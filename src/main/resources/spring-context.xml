@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd 
+	http://www.springframework.org/schema/aop 	http://www.springframework.org/schema/aop/spring-aop-4.0.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	<context:annotation-config />
+	<!-- 注解扫描配置  base-package:具体项目具体配置-->
+	<context:component-scan base-package="com.zk">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+
+	<!-- 注解实现事务
+	<tx:annotation-driven transaction-manager="transactionManager" />
+ 	-->
+ 	
+	<!-- jdbc 事务管理 
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	-->
+
+	<!--  mapperLocations：具体项目具配置路径 -->
+<!-- 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="mapperLocations" value="org.neris.cm.tm.mapping.*Mapper.xml" /> 
+		<property name="dataSource" ref="dataSource" />
+	</bean> -->
+	
+	
+	<!-- basePackage:具体项目具体配置-->
+<!-- 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="org.neris.cm.tm.dao" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+	</bean> -->
+ 
+
+	<!-- context:component-scan base-package="org.neris.cm.tm.service..*" /> -->
+	<!-- <context:component-scan base-package="org.neris.cm.tm.dao..*" /> -->
+
+<!--   <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource"> 
+    	<property name="driverClass" value="com.mysql.jdbc.Driver" /> 
+    	<property name="url" value="jdbc:mysql://localhost:3306/cm" /> 
+    	<property name="username" value="root" /> 
+    	<property name="password" value="root" /> 
+    </bean> -->
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+</beans>
