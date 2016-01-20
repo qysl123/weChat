@@ -1,5 +1,6 @@
 package com.zk.wechat.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.zk.wechat.constant.Constant;
 import com.zk.wechat.entity.TextMessage;
 import com.zk.wechat.service.WeChatService;
@@ -51,8 +52,13 @@ public class WeChatServiceImpl implements WeChatService{
                 textMessage.setMsgType("text");
                 result = Utils.createXml(textMessage);
             }else if(Constant.EVENT_LOCATION.equals(event)){
+                String location = postMap.get("latitude")+","+postMap.get("longitude");
+                String url = "http://api.map.baidu.com/geocoder/v2/?ak=OHEPf7vLbdcatGKsLrz4NQMl&callback=renderReverse&location="+location+"&output=json&pois=1";
+                JSONObject json = Utils.httpRequest(url, "GET", null);
+                String addr = json.getJSONObject("result").getString("formatted_address");
+                String description = json.getJSONObject("result").getString("sematic_description");
                 TextMessage textMessage = new TextMessage();
-                textMessage.setContent("你的地址被我获取到了, 小心了");
+                textMessage.setContent("你的地址被我获取到了, 小心了:"+addr+"("+description+")");
                 textMessage.setCreateTime(new Date().getTime());
                 textMessage.setToUserName(postMap.get("fromusername"));
                 textMessage.setFromUserName(Constant.CORPID);

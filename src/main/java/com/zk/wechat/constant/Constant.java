@@ -37,4 +37,5 @@ public class Constant {
 
     public static final String GET_ACCESSTOKEN = TOKENURL.replace("${corpid}", CORPID).replace("${corpsecret}", CORPSECRET);
     public static final String GET_CREATE_MENU = CREATE_MENU.replace("&{agentid}", AGENTID);
+    public static final String GET_USERID="https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?access_token=${tokenValue}&code=${code}";
 }

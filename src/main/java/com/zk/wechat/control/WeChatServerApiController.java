@@ -172,7 +172,7 @@ public class WeChatServerApiController{
 	/**
 	 * push主菜单
 	 */
-	@RequestMapping(value = "/applyMainMenu", method = RequestMethod.POST)
+	@RequestMapping(value = "/applyMainMenu", method = RequestMethod.GET)
 	@ResponseBody
 	public String applyMenu() {
 		String result = "";
@@ -180,9 +180,8 @@ public class WeChatServerApiController{
 			String tokenValue = Utils.tokenMap.get(Constant.CORPSECRET);
 			String url = Constant.GET_CREATE_MENU.replace("${tokenValue}", tokenValue);
 
-			//商户来源菜单
 			Button btn = new Button();
-			btn.setName("呵呵");
+			btn.setName("网页");
 
 			Button btn01 = new Button();
 			btn01.setName("哈哈");
@@ -198,8 +197,19 @@ public class WeChatServerApiController{
 
 			btn.setSub_button(new Button[]{btn01, btn02});
 
+			Button bb = new Button();
+			bb.setName("控制器");
+
+			Button bb01 = new Button();
+			bb01.setName("测试");
+			bb01.setType(Constant.BTYPE_VIEW);
+			String url01 = "http://sameal4.6655.la:13741/otherServerControl/doSoming";
+			String authUrl01 = Constant.AUTH.replace("${corpid}", Constant.CORPID).replace("${redirectUrl}", URLEncoder.encode(url01));
+			bb01.setUrl(authUrl01);
+			bb.setSub_button(new Button[]{bb01});
+
 			Menu menu = new Menu();
-			menu.setButton(new Button[]{btn});
+			menu.setButton(new Button[]{btn, bb});
 
 			String btnStr = JSONObject.toJSONString(menu).toString();
 
@@ -215,7 +225,7 @@ public class WeChatServerApiController{
 		return result;
 	}
 
-	@RequestMapping(value = "/getMenu", method = RequestMethod.POST)
+	@RequestMapping(value = "/getMenu", method = RequestMethod.GET)
 	@ResponseBody
 	public String getMenu(){
 		String s = "https://qyapi.weixin.qq.com/cgi-bin/menu/get?access_token=ACCESS_TOKEN&agentid=AGENTID";

@@ -73,12 +73,12 @@ public class Utils {
     }
 
     public static JSONObject httpRequest(String requestUrl, String type, String param) {
-        logger.info("httpRequest>>>>>>");
+        logger.info("httpRequest----url:"+requestUrl+",type:"+type+",param"+param);
         JSONObject jsonObject = null;
         StringBuffer buffer = new StringBuffer();
         try {
             URL url = new URL(requestUrl);
-            HttpsURLConnection httpUrlConn = (HttpsURLConnection) url.openConnection();
+            HttpURLConnection httpUrlConn = (HttpURLConnection) url.openConnection();
 
             httpUrlConn.setDoOutput(true);
             httpUrlConn.setDoInput(true);
@@ -112,13 +112,17 @@ public class Utils {
             inputStream.close();
             inputStream = null;
             httpUrlConn.disconnect();
-            jsonObject = JSONObject.parseObject(buffer.toString());
+
+            if(buffer.length() != 0){
+                int end = buffer.lastIndexOf("}") == buffer.length()?buffer.length():buffer.lastIndexOf("}")+1;
+                jsonObject = JSONObject.parseObject(buffer.substring(buffer.indexOf("{"), end));
+                logger.info("httpRequest----result:"+jsonObject.toString());
+            }
         } catch (ConnectException ce) {
             logger.error("发起https请求并获取结果出错：" + ce.getMessage(), ce);
         } catch (Exception e) {
             logger.error("发起https请求并获取结果出错：" + e.getMessage(), e);
         }
-        logger.info("httpRequest<<<<<<");
         return jsonObject;
     }
 
